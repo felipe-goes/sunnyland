@@ -1,0 +1,4 @@
+.cache
+/out
+/res/resources.h
+compile_commands.json
