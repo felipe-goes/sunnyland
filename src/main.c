@@ -5,8 +5,7 @@
 #include "../inc/stage.h"
 #include "../inc/joystick.h"
 #include "../inc/gamestate.h"
-
-#define FIX_ZERO FIX16(0)
+#include "../inc/player.h"
 
 Sprite *player;
 
@@ -34,10 +33,9 @@ int main() {
   // Stage foreground
   loadStage(&stage_tileset, &stage_map, &vRamIndex);
 
-  // Sprites
-  player = SPR_addSprite(&player_sprite, 0, 112,
-                         TILE_ATTR(PAL2, FALSE, FALSE, FALSE));
-  SPR_setAnim(player, 4);
+  // Player
+  loadSprite(&player_sprite);
+  animateSprite(PlayerIdle);
 
   SYS_enableInts();
 
@@ -54,8 +52,6 @@ int main() {
     // Foreground
     scrollStage();
     moveStage();
-    // MAP_scrollTo(stageMap, xOffset, yOffset);
-    // moveForeground();
 
     SPR_update();
     SYS_doVBlankProcess();
