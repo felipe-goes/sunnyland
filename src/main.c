@@ -7,8 +7,6 @@
 #include "../inc/gamestate.h"
 #include "../inc/player.h"
 
-Sprite *player;
-
 int main() {
   // SGDK initialization
   SYS_disableInts();
@@ -31,19 +29,37 @@ int main() {
   loadBackground(bg_b_blue, &vRamIndex);
 
   // Stage foreground
-  loadStage(&stage_tileset, &stage_map, &vRamIndex);
+  loadStage(&stage_tileset, &stage_map, &collision_tileset, &collision_map,
+            &vRamIndex);
 
   // Player
   loadSprite(&player_sprite);
   animateSprite(PlayerIdle);
+  updatePlayerPosition();
 
+  // changeGameState(Production);
   SYS_enableInts();
 
   u32 countFrame = 0;
-  while (1) {
+  u16 tileInfo = 0;
+  u8 x = 0, y = 0;
+  char text[6];
+  while (TRUE) {
     countFrame++;
     if (swapColors(countFrame))
       countFrame = 0;
+
+    if (countFrame % 30 == 0 && y <= 32) {
+      if (x > 63) {
+        x = 0;
+        y++;
+      }
+      tileInfo = getCollisionMap(x, y);
+      x++;
+      sprintf(text, "%d", tileInfo);
+      VDP_clearText(10, 2, 6);
+      VDP_drawText(text, 10, 2);
+    }
 
     // Background
     moveBGBRight();
@@ -53,6 +69,7 @@ int main() {
     scrollStage();
     moveStage();
 
+    updatePlayerPosition();
     SPR_update();
     SYS_doVBlankProcess();
   }

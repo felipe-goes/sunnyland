@@ -1,6 +1,4 @@
 #include "../inc/joystick.h"
-#include "gamestate.h"
-#include "vdp_bg.h"
 
 void myJoyHandler(u16 joy, u16 changed, u16 state) {
   if (joy == JOY_1) {
@@ -29,6 +27,18 @@ void myJoyHandler(u16 joy, u16 changed, u16 state) {
         setVerticalMove(Down);
       } else if ((changed & BUTTON_UP) | (changed & BUTTON_DOWN)) {
         setVerticalMove(NoneV);
+      }
+    } else {
+      if (state & BUTTON_RIGHT) {
+        movePlayerRight();
+      } else if (state & BUTTON_LEFT) {
+        movePlayerLeft();
+      } else if ((changed & BUTTON_RIGHT) | (changed & BUTTON_LEFT)) {
+        stopPlayerX();
+      }
+
+      if (state & BUTTON_C) {
+        setVerticalMove(Up);
       }
     }
   }

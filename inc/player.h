@@ -1,11 +1,24 @@
 #ifndef PLAYER_INCLUDED
 #define PLAYER_INCLUDED
 
+#include "stage.h"
+
 #include "types.h"
 #include "sprite_eng.h"
+#include "maths.h"
+
+#define FIX_ZERO FIX16(0)
 
 // Attributes
-extern Sprite *player;
+typedef struct {
+  fix16 positionX;
+  fix16 positionY;
+  fix16 velocityX;
+  fix16 velocityY;
+  Sprite *sprite;
+} Player;
+extern Player player;
+
 typedef enum {
   PlayerRun,
   PlayerLadder,
@@ -18,9 +31,9 @@ typedef enum {
 // Functions
 extern void loadSprite(const SpriteDefinition *sprite);
 extern void animateSprite(SpriteAnimation animation);
-
-// player = SPR_addSprite(&player_sprite, 0, 112,
-//                        TILE_ATTR(PAL2, FALSE, FALSE, FALSE));
-// SPR_setAnim(player, 4);
+extern void movePlayerRight(void);
+extern void movePlayerLeft(void);
+extern void stopPlayerX(void);
+extern void updatePlayerPosition(void);
 
 #endif // !PLAYER_INCLUDED
