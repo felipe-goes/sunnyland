@@ -1,6 +1,6 @@
 #include "../inc/stage.h"
 
-#include "map.h"
+#include "player.h"
 
 #define FIX_ZERO FIX16(0)
 
@@ -33,17 +33,35 @@ void loadStage(const TileSet *stageTileset, const MapDefinition *stageMap,
   }
 }
 
-void scrollStage() { MAP_scrollTo(stage.map, stage.xOffset, stage.yOffset); }
+void scrollStage() {
+  MAP_scrollTo(stage.map, fix16ToInt(stage.xOffset), fix16ToInt(stage.yOffset));
+}
 
 void moveStage() {
   switch (moveHorizontal) {
   case Left:
-    if (stage.xOffset > 0)
-      stage.xOffset = fix16Add(stage.xOffset, FIX16(-0.06));
+    // if (stage.xOffset > 0)
+    //   stage.xOffset = fix16Add(stage.xOffset, FIX16(-0.06));
+    if (fix16ToInt(stage.xOffset) > 0) {
+      if ((fix16ToInt(player.positionX) + 16) < 160) {
+        stage.xOffset = fix16Add(stage.xOffset, FIX16(-1.5));
+        updateCanMove(FALSE);
+      }
+    } else {
+      stage.xOffset = FIX_ZERO;
+      updateCanMove(TRUE);
+    }
     break;
   case Right:
-    if (stage.xOffset < 192)
-      stage.xOffset = fix16Add(stage.xOffset, FIX16(0.06));
+    if (fix16ToInt(stage.xOffset) < 192) {
+      if ((fix16ToInt(player.positionX) + 16) > 160) {
+        stage.xOffset = fix16Add(stage.xOffset, FIX16(1.5));
+        updateCanMove(FALSE);
+      }
+    } else {
+      stage.xOffset = FIX16(192);
+      updateCanMove(TRUE);
+    }
     break;
   default:
     moveHorizontal = NoneH;

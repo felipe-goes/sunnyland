@@ -4,7 +4,6 @@
 #include "../inc/background.h"
 #include "../inc/stage.h"
 #include "../inc/joystick.h"
-#include "../inc/gamestate.h"
 #include "../inc/player.h"
 
 int main() {
@@ -37,7 +36,6 @@ int main() {
   animateSprite(PlayerIdle);
   updatePlayerPosition();
 
-  // changeGameState(Production);
   SYS_enableInts();
 
   u32 countFrame = 0;
@@ -46,20 +44,25 @@ int main() {
   char text[6];
   while (TRUE) {
     countFrame++;
+    // Animate ocean
     if (swapColors(countFrame))
       countFrame = 0;
 
-    if (countFrame % 30 == 0 && y <= 32) {
-      if (x > 63) {
-        x = 0;
-        y++;
-      }
-      tileInfo = getCollisionMap(x, y);
-      x++;
-      sprintf(text, "%d", tileInfo);
-      VDP_clearText(10, 2, 6);
-      VDP_drawText(text, 10, 2);
-    }
+    // DEBUG
+    // Show tile map metadata
+    // if (y < 32) {
+    //   if (x > 63) {
+    //     x = 0;
+    //     y++;
+    //   }
+    //   tileInfo = getCollisionMap(x, y);
+    //   sprintf(text, "%d", tileInfo);
+    //   VDP_drawText(text, x, y);
+    //   x++;
+    // } else {
+    //   x = 0;
+    //   y = 0;
+    // }
 
     // Background
     moveBGBRight();
@@ -69,7 +72,9 @@ int main() {
     scrollStage();
     moveStage();
 
+    // Player
     updatePlayerPosition();
+
     SPR_update();
     SYS_doVBlankProcess();
   }

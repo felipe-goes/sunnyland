@@ -1,6 +1,8 @@
 #include "../inc/player.h"
 
-Player player = {intToFix16(0), intToFix16(112), FIX_ZERO, FIX_ZERO, NULL};
+#include "stage.h"
+
+Player player = {FIX16(0), FIX16(112), FIX_ZERO, FIX16(1.0), TRUE, NULL};
 
 void loadSprite(const SpriteDefinition *sprite) {
   player.sprite = SPR_addSprite(sprite, fix16ToInt(player.positionX),
@@ -29,9 +31,38 @@ void stopPlayerX() {
   player.velocityX = FIX16(0);
 }
 
+void updateCanMove(bool status) { player.canMove = status; }
+
 void updatePlayerPosition() {
-  // if (player.positionX > 0 && player.positionX < 640)
-  player.positionX += player.velocityX;
+  // Update X and Y axis
+  // player.positionX = fix16Add(player.positionX, player.velocityX);
+  // player.positionY = fix16Add(player.positionY, player.velocityY);
+  if (player.canMove) {
+    fix16 xPosTemp = fix16Add(player.positionX, player.velocityX);
+    fix16 yPosTemp = fix16Add(player.positionY, player.velocityY);
+
+    // Vallidate position
+    if (fix16ToInt(xPosTemp) < 0) {
+      xPosTemp = FIX_ZERO;
+    } else if ((fix16ToInt(xPosTemp) + 32) > 320) {
+      xPosTemp = FIX16(288);
+    }
+
+    u16 xIntTemp = fix16ToInt(xPosTemp);
+    u16 yIntTemp = fix16ToInt(yPosTemp);
+
+    u8 xIndex = xIntTemp / 8;
+    u8 yIndex = yIntTemp / 8;
+    if (!getCollisionMap(xIndex, yIndex) &&
+        !getCollisionMap(xIndex, yIndex + 4) &&
+        !getCollisionMap(xIndex + 4, yIndex) &&
+        !getCollisionMap(xIndex + 4, yIndex + 4)) {
+      player.positionY = yPosTemp;
+    }
+    player.positionX = xPosTemp;
+  }
+
+  // Render
   SPR_setPosition(player.sprite, fix16ToInt(player.positionX),
                   fix16ToInt(player.positionY));
 }

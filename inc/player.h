@@ -1,8 +1,6 @@
 #ifndef PLAYER_INCLUDED
 #define PLAYER_INCLUDED
 
-#include "stage.h"
-
 #include "types.h"
 #include "sprite_eng.h"
 #include "maths.h"
@@ -15,6 +13,7 @@ typedef struct {
   fix16 positionY;
   fix16 velocityX;
   fix16 velocityY;
+  bool canMove;
   Sprite *sprite;
 } Player;
 extern Player player;
@@ -35,5 +34,6 @@ extern void movePlayerRight(void);
 extern void movePlayerLeft(void);
 extern void stopPlayerX(void);
 extern void updatePlayerPosition(void);
+extern void updateCanMove(bool status);
 
 #endif // !PLAYER_INCLUDED
