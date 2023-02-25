@@ -40,8 +40,7 @@ void scrollStage() {
 void moveStage() {
   switch (moveHorizontal) {
   case Left:
-    // if (stage.xOffset > 0)
-    //   stage.xOffset = fix16Add(stage.xOffset, FIX16(-0.06));
+    updateCanMove(TRUE);
     if (fix16ToInt(stage.xOffset) > 0) {
       if ((fix16ToInt(player.positionX) + 16) < 160) {
         stage.xOffset = fix16Add(stage.xOffset, FIX16(-1.5));
@@ -49,10 +48,10 @@ void moveStage() {
       }
     } else {
       stage.xOffset = FIX_ZERO;
-      updateCanMove(TRUE);
     }
     break;
   case Right:
+    updateCanMove(TRUE);
     if (fix16ToInt(stage.xOffset) < 192) {
       if ((fix16ToInt(player.positionX) + 16) > 160) {
         stage.xOffset = fix16Add(stage.xOffset, FIX16(1.5));
@@ -60,10 +59,10 @@ void moveStage() {
       }
     } else {
       stage.xOffset = FIX16(192);
-      updateCanMove(TRUE);
     }
     break;
   default:
+    updateCanMove(TRUE);
     moveHorizontal = NoneH;
   }
 

@@ -15,13 +15,11 @@ void animateSprite(SpriteAnimation animation) {
 }
 
 void movePlayerRight() {
-  // player.velocityX = fix16Add(player.velocityX, FIX16(0.05));
   animateSprite(PlayerRun);
   SPR_setHFlip(player.sprite, FALSE);
   player.velocityX = FIX16(1.5);
 }
 void movePlayerLeft() {
-  // player.velocityX = fix16Add(player.velocityX, FIX16(-0.05));
   animateSprite(PlayerRun);
   SPR_setHFlip(player.sprite, TRUE);
   player.velocityX = FIX16(-1.5);
@@ -35,8 +33,6 @@ void updateCanMove(bool status) { player.canMove = status; }
 
 void updatePlayerPosition() {
   // Update X and Y axis
-  // player.positionX = fix16Add(player.positionX, player.velocityX);
-  // player.positionY = fix16Add(player.positionY, player.velocityY);
   if (player.canMove) {
     fix16 xPosTemp = fix16Add(player.positionX, player.velocityX);
     fix16 yPosTemp = fix16Add(player.positionY, player.velocityY);
