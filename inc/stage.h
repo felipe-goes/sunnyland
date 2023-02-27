@@ -7,7 +7,7 @@
 
 // Attributes
 typedef enum { Left, Right, NoneH } MoveHorizontal;
-typedef enum { Up, Down, NoneV } MoveVertical;
+typedef enum { Up, Down } MoveVertical;
 
 typedef struct {
   fix16 xOffset;
@@ -29,7 +29,9 @@ extern void loadStage(const TileSet *stageTileset,
 extern void scrollStage(void);
 extern void moveStage(void);
 extern void setHorizontalMove(MoveHorizontal move);
+extern MoveHorizontal getHorizontalMove(void);
 extern void setVerticalMove(MoveVertical move);
+extern MoveVertical getVerticalMove(void);
 extern u16 getCollisionMap(u8 x, u8 y);
 
 #endif // !STAGE_INCLUDED

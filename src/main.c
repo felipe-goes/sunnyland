@@ -34,7 +34,8 @@ int main() {
   // Player
   loadSprite(&player_sprite);
   animateSprite(PlayerIdle);
-  updatePlayerPosition();
+  updatePlayerXPosition();
+  updatePlayerYPosition();
 
   SYS_enableInts();
 
@@ -73,7 +74,9 @@ int main() {
     moveStage();
 
     // Player
-    updatePlayerPosition();
+    updatePlayerXPosition();
+    updatePlayerYPosition();
+    renderPlayer();
 
     SPR_update();
     SYS_doVBlankProcess();

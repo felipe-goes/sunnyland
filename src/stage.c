@@ -6,10 +6,12 @@
 
 Stage stage = {FIX_ZERO, FIX_ZERO, NULL};
 MoveHorizontal moveHorizontal = NoneH;
-MoveVertical moveVertical = NoneV;
+MoveVertical moveVertical = Down;
 
 void setHorizontalMove(MoveHorizontal move) { moveHorizontal = move; }
+MoveHorizontal getHorizontalMove() { return moveHorizontal; }
 void setVerticalMove(MoveVertical move) { moveVertical = move; }
+MoveVertical getVerticalMove() { return moveVertical; }
 
 void loadStage(const TileSet *stageTileset, const MapDefinition *stageMap,
                const TileSet *collisionTileset,
@@ -76,7 +78,7 @@ void moveStage() {
       stage.yOffset = fix16Add(stage.yOffset, FIX16(0.06));
     break;
   default:
-    moveVertical = NoneV;
+    moveVertical = Down;
   }
 }
 
